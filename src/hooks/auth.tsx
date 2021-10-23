@@ -52,7 +52,10 @@ function AuthProvider({ children }: AuthProviderProps) {
       const authSessionResponse = await AuthSession.startAsync({ authUrl }) as AuthorizationResponse;
 
       if (authSessionResponse.type === 'success' && authSessionResponse.params.error !== 'access_denied') {
-        const authResponse = await api.post('/authenticate', { code: authSessionResponse.params.code });
+        const authResponse = await api.post('/authenticate', {
+          code: authSessionResponse.params.code,
+          type: 'mobile'
+        });
 
         const { user, token } = authResponse.data as AuthResponse;
 
@@ -61,7 +64,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         await AsyncStorage.setItem(USER_STORAGE, JSON.stringify(user));
         await AsyncStorage.setItem(TOKEN_STORAGE, JSON.stringify(token));
 
-        setUser(user); 
+        setUser(user);
       }
     } catch (err) {
       console.log(err);
