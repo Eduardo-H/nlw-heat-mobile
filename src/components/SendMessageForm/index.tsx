@@ -6,14 +6,18 @@ import {
   View
 } from 'react-native';
 import { api } from '../../services/api';
-import { COLORS } from '../../theme';
+import { useToast } from 'react-native-toast-notifications';
+
 import { Button } from '../Button';
+import { COLORS } from '../../theme';
 
 import { styles } from './styles';
 
 export function SendMessageForm() {
   const [message, setMessage] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
+
+  const toast = useToast();
 
   async function handleMessageSubmit() {
     const messageFormated = message.trim();
@@ -24,7 +28,18 @@ export function SendMessageForm() {
     }
 
     setSendingMessage(true);
-    await api.post('/messages', { message: messageFormated });
+
+    try {
+      await api.post('/messages', { message: messageFormated });
+
+      toast.show('Mensagem enviada com sucesso!', {
+        type: 'success'
+      });
+    } catch (err) {
+      toast.show('Não foi possível enviar sua mensagem', {
+        type: 'danger'
+      });
+    }
 
     setMessage('');
     Keyboard.dismiss();
@@ -34,22 +49,22 @@ export function SendMessageForm() {
 
   return (
     <View style={styles.container}>
-      <TextInput 
-        keyboardAppearance="dark" 
-        placeholder="Qual sua expectativa para o evento" 
+      <TextInput
+        keyboardAppearance="dark"
+        placeholder="Qual sua expectativa para o evento"
         placeholderTextColor={COLORS.GRAY_PRIMARY}
         multiline
         maxLength={140}
         onChangeText={setMessage}
         value={message}
         editable={!sendingMessage}
-        style={styles.input} 
+        style={styles.input}
       />
 
-      <Button 
-        title="Enviar Mensagem" 
-        color={COLORS.WHITE} 
-        backgroundColor={COLORS.PINK} 
+      <Button
+        title="Enviar Mensagem"
+        color={COLORS.WHITE}
+        backgroundColor={COLORS.PINK}
         onPress={handleMessageSubmit}
         isLoading={sendingMessage}
       />
