@@ -1,18 +1,19 @@
 import React from 'react';
-import { 
+import {
   useFonts,
-  Roboto_400Regular, 
-  Roboto_700Bold 
+  Roboto_400Regular,
+  Roboto_700Bold
 } from '@expo-google-fonts/roboto';
 import AppLoading from 'expo-app-loading';
 import { StatusBar } from 'expo-status-bar';
 
 import { AuthProvider } from './src/hooks/auth';
-import { Home } from './src/screens/Home';
+import { MessageProvider } from './src/hooks/message';
+import { Routes } from './src/routes';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    Roboto_400Regular, 
+    Roboto_400Regular,
     Roboto_700Bold
   });
 
@@ -22,12 +23,14 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <StatusBar 
-        style="light" 
-        translucent 
-        backgroundColor="transparent"
-      />
-      <Home />
+      <MessageProvider>
+        <StatusBar
+          style="light"
+          translucent
+          backgroundColor="transparent"
+        />
+        <Routes />
+      </MessageProvider>
     </AuthProvider>
   );
 }

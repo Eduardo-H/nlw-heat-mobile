@@ -9,9 +9,11 @@ import { SignInBox } from '../../components/SignInBox';
 
 import { styles } from './styles';
 import { ChatRequest } from '../../components/ChatRequest';
+import { useMessage } from '../../hooks/message';
 
 export function Home() {
   const { user } = useAuth();
+  const { isMessageBoxOpen } = useMessage();
 
   return (
     <KeyboardAvoidingView
@@ -19,7 +21,7 @@ export function Home() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <View style={styles.container}>
-        <ChatRequest />
+        {isMessageBoxOpen ? <ChatRequest /> : <Header />}
         <MessageList />
         {user ? <SendMessageForm /> : <SignInBox />}
       </View>

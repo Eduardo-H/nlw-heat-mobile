@@ -9,6 +9,8 @@ import { MotiView } from 'moti';
 import { UserPhoto } from '../UserPhoto';
 
 import { styles } from './styles';
+import { useMessage, User } from '../../hooks/message';
+import { useAuth } from '../../hooks/auth';
 
 export type MessageProps = {
   id: string;
@@ -26,6 +28,16 @@ type Props = {
 }
 
 export function Message({ data }: Props) {
+  const { user } = useAuth();
+  const { setUserMessage, openMessageBox } = useMessage();
+
+  function handleOpenChatRequest(selectedUser: User) {
+    if (user?.id !== selectedUser.id) {
+      setUserMessage(selectedUser);
+      openMessageBox();
+    }
+  }
+
   return (
     <MotiView
       from={{ opacity: 0, translateY: -50 }}
@@ -38,7 +50,10 @@ export function Message({ data }: Props) {
       </Text>
 
       <View style={styles.footer}>
-        <TouchableOpacity activeOpacity={0.85}>
+        <TouchableOpacity
+          onPress={() => handleOpenChatRequest(data.user)}
+          activeOpacity={0.85}
+        >
           <UserPhoto
             imageUri={data.user.avatar_url}
             size="SMALL"
