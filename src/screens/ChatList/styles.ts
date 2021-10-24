@@ -23,5 +23,12 @@ export const styles = StyleSheet.create({
   },
   chats: {
     flex: 1,
+  },
+  noChatsText: {
+    fontSize: 16,
+    fontFamily: FONTS.REGULAR,
+    color: COLORS.GRAY_SECONDARY,
+    textAlign: 'center',
+    marginTop: 30
   }
 });

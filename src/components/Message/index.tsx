@@ -6,11 +6,11 @@ import {
 } from 'react-native';
 import { MotiView } from 'moti';
 
+import { useMessage, User } from '../../hooks/message';
+import { useAuth } from '../../hooks/auth';
 import { UserPhoto } from '../UserPhoto';
 
 import { styles } from './styles';
-import { useMessage, User } from '../../hooks/message';
-import { useAuth } from '../../hooks/auth';
 
 export type MessageProps = {
   id: string;
@@ -32,7 +32,7 @@ export function Message({ data }: Props) {
   const { setUserMessage, openMessageBox } = useMessage();
 
   function handleOpenChatRequest(selectedUser: User) {
-    if (user?.id !== selectedUser.id) {
+    if (user && user?.id !== selectedUser.id) {
       setUserMessage(selectedUser);
       openMessageBox();
     }
