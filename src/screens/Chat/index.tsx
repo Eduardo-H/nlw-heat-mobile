@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   TextInput,
   View,
@@ -29,6 +29,8 @@ export function Chat() {
   } = useMessage();
   const navigate = useNavigation();
 
+  const scrollViewRef = useRef<ScrollView>(null);
+
   const [message, setMessage] = useState('');
 
   const contact = openChat?.users[0].id === user?.id ? openChat?.users[1] : openChat?.users[0];
@@ -50,12 +52,26 @@ export function Chat() {
     setMessage('');
   }
 
+  function scrollDown() {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd()
+    }
+  }
+
   useEffect(() => {
     const socket = io(String(api.defaults.baseURL));
 
     socket.on(`new_private_message_${openChat?.id}`, (newMessage: Message) => {
       updatePrivateMessages(newMessage);
+
+      setTimeout(() => {
+        if (scrollViewRef.current) {
+          scrollViewRef.current.scrollToEnd()
+        }
+      }, 100);
     });
+
+    scrollDown();
   }, []);
 
   return (
@@ -80,6 +96,7 @@ export function Chat() {
       </View>
 
       <ScrollView
+        ref={scrollViewRef}
         style={styles.messages}
       >
         {
