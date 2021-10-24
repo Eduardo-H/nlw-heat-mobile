@@ -25,9 +25,11 @@ type MessageContextData = {
   isMessageBoxOpen: boolean;
   userMessageBox: User | null;
   openChat: Chat | null;
+  privateMessages: Message[];
   openMessageBox: () => void;
   closeMessageBox: () => void;
   setUserMessage: (user: User) => void;
+  updatePrivateMessages: (newMessage: Message) => void;
   fetchPrivateChat: (user_id: string, contact_id: string) => void;
 }
 
@@ -41,6 +43,7 @@ function MessageProvider({ children }: MessageProviderProps) {
   const [userMessageBox, setUserMessageBox] = useState<User | null>(null);
   const [isMessageBoxOpen, setIsMessageBoxOpen] = useState(false);
   const [openChat, setOpenChat] = useState<Chat | null>(null);
+  const [privateMessages, setPrivateMessages] = useState<Message[]>([] as Message[]);
 
   function openMessageBox() {
     setIsMessageBoxOpen(true);
@@ -54,6 +57,13 @@ function MessageProvider({ children }: MessageProviderProps) {
     setUserMessageBox(user);
   }
 
+  function updatePrivateMessages(newMessage: Message) {
+    setPrivateMessages(prevState => [
+      ...prevState,
+      newMessage
+    ]);
+  }
+
   async function fetchPrivateChat(user_id: string, contact_id: string) {
     const { data } = await api.post<Chat>('/chat', {
       user_id,
@@ -61,6 +71,7 @@ function MessageProvider({ children }: MessageProviderProps) {
     });
 
     setOpenChat(data);
+    setPrivateMessages(data.messages);
   }
 
   return (
@@ -68,9 +79,11 @@ function MessageProvider({ children }: MessageProviderProps) {
       isMessageBoxOpen,
       userMessageBox,
       openChat,
+      privateMessages,
       openMessageBox,
       closeMessageBox,
       setUserMessage,
+      updatePrivateMessages,
       fetchPrivateChat
     }}>
       {children}

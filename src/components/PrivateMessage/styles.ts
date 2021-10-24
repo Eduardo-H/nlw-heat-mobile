@@ -4,7 +4,7 @@ import { COLORS, FONTS } from '../../theme';
 export const styles = StyleSheet.create({
   container: {
     maxWidth: '70%',
-    marginBottom: 8
+    marginBottom: 5
   },
   sent: {
     backgroundColor: COLORS.GRAY_QUATERNARY,

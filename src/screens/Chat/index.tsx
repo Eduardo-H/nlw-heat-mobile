@@ -22,11 +22,14 @@ import { styles } from './styles';
 
 export function Chat() {
   const { user } = useAuth();
-  const { openChat } = useMessage();
+  const {
+    openChat,
+    privateMessages,
+    updatePrivateMessages
+  } = useMessage();
   const navigate = useNavigation();
 
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<Message[]>(openChat ? openChat.messages : []);
 
   const contact = openChat?.users[0].id === user?.id ? openChat?.users[1] : openChat?.users[0];
 
@@ -48,13 +51,10 @@ export function Chat() {
   }
 
   useEffect(() => {
-    const socket = io('http://localhost:4000');
+    const socket = io(String(api.defaults.baseURL));
 
     socket.on(`new_private_message_${openChat?.id}`, (newMessage: Message) => {
-      const updatedMessages = [...messages];
-      updatedMessages.push(newMessage);
-
-      setMessages(updatedMessages);
+      updatePrivateMessages(newMessage);
     });
   }, []);
 
@@ -83,7 +83,7 @@ export function Chat() {
         style={styles.messages}
       >
         {
-          messages.map((message) => (
+          privateMessages.map((message) => (
             <PrivateMessage
               key={message.id}
               text={message.text}
