@@ -19,6 +19,18 @@ socket.on('new_message', newMessage => {
 export function MessageList() {
   const [messages, setMessages] = useState<MessageProps[]>([]);
 
+  function updateMessages(prevState: MessageProps[]) {
+    if (prevState.length > 2) {
+      return [
+        messagesQueue[0],
+        prevState[0],
+        prevState[1]
+      ];
+    } else {
+      return [messagesQueue[0], ...prevState];
+    }
+  }
+
   useEffect(() => {
     async function fetchMessages() {
       const messagesResponse = await api.get<MessageProps[]>('/messages/last-3');
@@ -31,7 +43,7 @@ export function MessageList() {
   useEffect(() => {
     const timer = setInterval(() => {
       if (messagesQueue.length > 0) {
-        setMessages(prevState => [messagesQueue[0], prevState[0], prevState[1]]);
+        setMessages(prevState => updateMessages(prevState));
         messagesQueue.shift();
       }
     }, 3000);
@@ -40,7 +52,7 @@ export function MessageList() {
   }, []);
 
   return (
-    <ScrollView 
+    <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="never"
