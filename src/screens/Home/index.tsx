@@ -8,19 +8,20 @@ import { SendMessageForm } from '../../components/SendMessageForm';
 import { SignInBox } from '../../components/SignInBox';
 
 import { styles } from './styles';
+import { ChatRequest } from '../../components/ChatRequest';
 
 export function Home() {
   const { user } = useAuth();
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={ Platform.OS === 'ios' ? 'padding' : undefined }
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <View style={styles.container}>
-        <Header />
+        <ChatRequest />
         <MessageList />
-        { user ? <SendMessageForm /> : <SignInBox /> }
+        {user ? <SendMessageForm /> : <SignInBox />}
       </View>
     </KeyboardAvoidingView>
   )

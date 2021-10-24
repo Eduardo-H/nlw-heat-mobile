@@ -4,10 +4,9 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 135,
-    paddingBottom: 184
   },
   content: {
-
+    flexGrow: 1,
+    justifyContent: 'center'
   }
 });
