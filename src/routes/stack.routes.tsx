@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Home } from '../screens/Home';
 import { Chat } from '../screens/Chat';
 import { useAuth } from '../hooks/auth';
+import { ChatList } from '../screens/ChatList';
 
 const { Navigator, Group, Screen } = createStackNavigator();
 
@@ -11,6 +12,7 @@ declare global {
     interface RootParamList {
       Home: undefined;
       Chat: undefined;
+      ChatList: undefined;
     }
   }
 }
@@ -37,6 +39,11 @@ export function AppRoutes() {
         <Screen
           name="Chat"
           component={Chat}
+        />
+
+        <Screen
+          name="ChatList"
+          component={ChatList}
         />
       </Group>
     </Navigator>

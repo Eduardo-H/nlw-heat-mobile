@@ -15,7 +15,7 @@ export type Message = {
   user: User
 }
 
-type Chat = {
+export type Chat = {
   id: string;
   messages: Message[];
   users: User[];
@@ -30,6 +30,7 @@ type MessageContextData = {
   closeMessageBox: () => void;
   setUserMessage: (user: User) => void;
   updatePrivateMessages: (newMessage: Message) => void;
+  getChatById: (id: string) => void;
   fetchPrivateChat: (user_id: string, contact_id: string) => void;
 }
 
@@ -64,6 +65,13 @@ function MessageProvider({ children }: MessageProviderProps) {
     ]);
   }
 
+  async function getChatById(id: string) {
+    const { data } = await api.get<Chat>(`/chat/${id}`);
+
+    setOpenChat(data);
+    setPrivateMessages(data.messages);
+  }
+
   async function fetchPrivateChat(user_id: string, contact_id: string) {
     const { data } = await api.post<Chat>('/chat', {
       user_id,
@@ -84,6 +92,7 @@ function MessageProvider({ children }: MessageProviderProps) {
       closeMessageBox,
       setUserMessage,
       updatePrivateMessages,
+      getChatById,
       fetchPrivateChat
     }}>
       {children}

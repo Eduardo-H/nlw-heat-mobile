@@ -18,5 +18,18 @@ export const styles = StyleSheet.create({
     fontFamily: FONTS.REGULAR,
     color: COLORS.WHITE,
     marginRight: 20
+  },
+  chatsButton: {
+    marginLeft: 'auto',
+    marginRight: 20,
+    marginTop: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    backgroundColor: COLORS.BLACK_TERTIARY,
+  },
+  chatsButtonText: {
+    fontSize: 15,
+    fontFamily: FONTS.REGULAR,
+    color: COLORS.WHITE,
   }
 });
