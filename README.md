@@ -23,7 +23,7 @@ Since this project connects with Github, you'll need to create a oAuth app on yo
 Note: The project will only work correctly if the back-end project is running already, you can find the repository [here](https://github.com/Eduardo-H/nlw-heat-node).
 
 ## Usage
-To follow this app you can follow these steps:<br>
+To run the app, you can follow these steps:
 - Clone the repository with ```git clone https://github.com/Eduardo-H/nlw-heat-mobile```
 - Navigate into the project's folder ```cd nlw-heat-mobile/```
 - Install all the project's dependencies by running ```yarn```
